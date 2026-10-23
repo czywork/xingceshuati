@@ -190,6 +190,24 @@ export async function renderSetup() {
   }}, yearOptions(s.yearTo));
 
   // ---- 数量 ----
+  const presetGroup = h('div', { class: 'chip-group' });
+  const renderPresets = () => {
+    clear(presetGroup);
+    for (const n of COUNT_PRESETS) {
+      presetGroup.append(
+        h('div', {
+          class: `chip${s.count === n ? ' active' : ''}`,
+          text: String(n),
+          onClick: () => {
+            s.count = n;
+            countInput.value = String(n);
+            renderPresets();
+            onChange();
+          },
+        })
+      );
+    }
+  };
   countInput = h('input', {
     class: 'input input-sm', type: 'number', min: '1', max: '500', value: String(s.count),
     onInput: (e) => {
@@ -197,25 +215,11 @@ export async function renderSetup() {
       if (Number.isNaN(v)) v = 1;
       v = Math.max(1, Math.min(500, v));
       s.count = v;
+      renderPresets();
       onChange();
     },
   });
-  const presetGroup = h('div', { class: 'chip-group' },
-    COUNT_PRESETS.map((n) =>
-      h('div', {
-        class: `chip${s.count === n ? ' active' : ''}`,
-        onClick: (e) => {
-          s.count = n;
-          countInput.value = String(n);
-          clear(presetGroup);
-          presetGroup.append(...COUNT_PRESETS.map((m) =>
-            h('div', { class: `chip${s.count === m ? ' active' : ''}`, onClick: (ev) => ev.currentTarget.click && e.currentTarget.parentElement.querySelector } , String(m))
-          ));
-          onChange();
-        },
-      }, String(n))
-    )
-  );
+  renderPresets();
 
   // ---- 限时 ----
   const timeSwitch = h('input', { type: 'checkbox', checked: !!s.timeLimit, onChange: (e) => {

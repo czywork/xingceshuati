@@ -12,6 +12,16 @@ function appendChildren(el, children) {
 }
 
 /**
+ * 安全追加子节点到已有元素。
+ * 复用 h() 的过滤逻辑，忽略 null / false / '' 等空值——
+ * 原生 append() 会把 null 转成文本 “null” 渲染出来。
+ */
+export function appendAll(el, ...children) {
+  appendChildren(el, children);
+  return el;
+}
+
+/**
  * 创建元素。
  * @param {string} tag 标签名
  * @param {object} attrs 属性：class、html、text、style、onXxx 事件、dataset，其余为普通属性

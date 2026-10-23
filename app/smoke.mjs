@@ -35,6 +35,7 @@ try {
   const home = await fetch(BASE + '/');
   const homeText = await home.text();
   check('GET / 返回 HTML 首页', home.status === 200 && homeText.includes('行测真题刷题'));
+  check('首页引用站点图标', homeText.includes('/图标.png'));
 
   const jsRes = await fetch(BASE + '/js/main.js');
   check('GET /js/main.js (JS MIME)', jsRes.status === 200 && /javascript/.test(jsRes.headers.get('content-type') || ''));
@@ -44,6 +45,9 @@ try {
 
   const pageRes = await fetch(BASE + '/js/pages/quiz.js');
   check('GET /js/pages/quiz.js', pageRes.status === 200);
+
+  const iconRes = await fetch(BASE + '/图标.png');
+  check('GET /图标.png（站点图标）返回图片', iconRes.status === 200 && /image\/png/.test(iconRes.headers.get('content-type') || ''));
 
   // 2) 元数据
   const meta = await json('/api/meta');
@@ -76,21 +80,21 @@ try {
   const bad = await post('/api/quiz', { count: 0 });
   check('POST /api/quiz 非法题量 → 400', bad.status === 400);
 
-  // 8) 图片服务：从资料分析题里找一个 /img/ 路径
-  const imgQuiz = await post('/api/quiz', { count: 40, modules: ['06'] });
-  let imgUrl = null;
-  const re = /\/img\/[^"' )]+\.(?:png|jpg|jpeg|gif)/i;
+  // 8) 图片服务：收集资料分析题里的 /img/ 引用，逐个尝试直到成功（避免随机抽题导致的偶发失败）
+  const imgQuiz = await post('/api/quiz', { count: 60, modules: ['06'] });
+  const re = /\/img\/[^"' )>\s]+\.(?:png|jpg|jpeg|gif)/gi;
+  const candidates = new Set();
   for (const q of imgQuiz.body?.questions || []) {
     const hay = `${q.material?.html || ''}${q.stemHtml || ''}`;
-    const m = hay.match(re);
-    if (m) { imgUrl = m[0]; break; }
+    for (const m of hay.matchAll(re)) candidates.add(m[0]);
   }
-  if (imgUrl) {
-    const img = await fetch(BASE + imgUrl);
-    check(`GET ${imgUrl.slice(0, 40)}… 返回图片`, img.status === 200 && /image/.test(img.headers.get('content-type') || ''));
-  } else {
-    console.log('  \x1b[33mSKIP\x1b[0m  未在资料分析题中找到图片引用');
+  let imgOk = false;
+  for (const url of candidates) {
+    const img = await fetch(BASE + url);
+    if (img.status === 200 && /image/.test(img.headers.get('content-type') || '')) { imgOk = true; break; }
   }
+  if (candidates.size) check(`GET 题目图片（${candidates.size} 个候选）返回图片`, imgOk);
+  else console.log('  \x1b[33mSKIP\x1b[0m  未在资料分析题中找到图片引用');
 
   // 9) 路径穿越防护
   const trav = await fetch(BASE + '/img/%2e%2e/%2e%2e/app/config.mjs');

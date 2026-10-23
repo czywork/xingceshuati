@@ -2,7 +2,7 @@
  * 答题页：倒计时、单选/多选交互、材料/图片渲染、上/下一题、答题卡导航、
  * 收藏与标记、交卷判分。所有瞬时状态存于 session.quiz（内存），刷新即清空。
  */
-import { h, clear, formatDuration } from '../dom.js';
+import { h, clear, appendAll, formatDuration } from '../dom.js';
 import { api } from '../api.js';
 import { store, session } from '../store.js';
 import { navigate } from '../router.js';
@@ -100,7 +100,8 @@ export function renderQuiz() {
   function renderQuestion() {
     const q = quiz.questions[index];
     clear(questionArea);
-    questionArea.append(
+    appendAll(
+      questionArea,
       metaBadges(q),
       materialBlock(q),
       stemBlock(q),

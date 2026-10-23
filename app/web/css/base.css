@@ -109,14 +109,12 @@ img {
 }
 
 .brand-logo {
-  display: grid;
-  place-items: center;
+  display: block;
   width: 30px;
   height: 30px;
   border-radius: 9px;
+  object-fit: cover;
   background: linear-gradient(135deg, var(--primary), #7048e8);
-  color: #fff;
-  font-size: 16px;
 }
 
 .main-nav {

@@ -2,7 +2,7 @@
  * 错题本 / 收藏 / 历史记录页。数据均持久化于 localStorage（store）。
  * 支持：单题练习、内联查看答案解析、移除、重练全部错题、清空。
  */
-import { h, clear, formatDuration } from '../dom.js';
+import { h, clear, appendAll, formatDuration } from '../dom.js';
 import { api } from '../api.js';
 import { store, session } from '../store.js';
 import { navigate } from '../router.js';
@@ -127,7 +127,8 @@ export async function renderLibrary() {
   function renderWrong() {
     const items = store.getWrongBook();
     clear(toolbarEl);
-    toolbarEl.append(
+    appendAll(
+      toolbarEl,
       h('span', { class: 'muted', text: `共 ${items.length} 道错题` }),
       h('span', { class: 'spacer' }),
       items.length
@@ -154,7 +155,8 @@ export async function renderLibrary() {
   function renderFav() {
     const items = store.getFavorites();
     clear(toolbarEl);
-    toolbarEl.append(
+    appendAll(
+      toolbarEl,
       h('span', { class: 'muted', text: `共 ${items.length} 道收藏` }),
       h('span', { class: 'spacer' }),
       items.length
@@ -180,7 +182,8 @@ export async function renderLibrary() {
   function renderHistory() {
     const items = store.getHistory();
     clear(toolbarEl);
-    toolbarEl.append(
+    appendAll(
+      toolbarEl,
       h('span', { class: 'muted', text: `最近 ${items.length} 次记录` }),
       h('span', { class: 'spacer' }),
       items.length

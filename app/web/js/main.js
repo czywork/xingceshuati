@@ -2,7 +2,7 @@
  * 前端入口：注册路由、导航高亮、头部统计。
  * 全部为零依赖原生实现，页面通过 hash 路由切换。
  */
-import { h, clear, qs, qsa } from './dom.js';
+import { h, clear, qs, qsa, appendAll } from './dom.js';
 import { defineRoutes, setFallback, startRouter } from './router.js';
 import { store } from './store.js';
 import { getMeta } from './meta.js';
@@ -35,7 +35,8 @@ function updateHeaderStats() {
   if (!el) return;
   clear(el);
   const mk = (label, value) => h('span', {}, `${label} `, h('b', { text: String(value) }));
-  el.append(
+  appendAll(
+    el,
     bankTotal != null ? mk('题库', bankTotal) : null,
     mk('错题', store.getWrongBook().length),
     mk('收藏', store.getFavorites().length)

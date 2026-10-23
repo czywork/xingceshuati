@@ -48,3 +48,8 @@
 - 本目录由 `workbench/scripts/export-raw-questions.mjs` 生成，**可重复执行**（会覆盖本目录）
 
 > 生成时间：2026-09-16T08:08:28.938Z
+
+## 来源与致谢
+
+- 本目录真题数据来自开源项目 [ERRRC/xingcezhenti](https://github.com/ERRRC/xingcezhenti)。
+- 本仓库的可视化刷题系统（`app/` 目录）在上述数据基础上由 AI 开发实现。

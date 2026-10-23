@@ -46,7 +46,8 @@ function ensureDir(dir) {
 }
 
 function writeJson(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data), 'utf8');
+  // 以 2 空格缩进输出，便于人工查看与版本 diff（体积换可读性）
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
 }
 
 function listPaperFiles(moduleDir) {
