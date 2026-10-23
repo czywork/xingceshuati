@@ -35,6 +35,9 @@ export const api = {
   /** 生成一套题（不含答案） */
   generateQuiz: (options) => request('/api/quiz', { method: 'POST', body: options }),
 
+  /** 统计筛选条件下的可用题量 */
+  count: (options) => request('/api/count', { method: 'POST', body: options }),
+
   /** 提交答案判分 */
   grade: (answers, timeUsed) =>
     request('/api/grade', { method: 'POST', body: { answers, timeUsed } }),

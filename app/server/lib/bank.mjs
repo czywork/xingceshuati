@@ -127,6 +127,15 @@ export class QuestionBank {
     return { questions: picked, requested, availableUnique, poolSize: pool.length };
   }
 
+  /** 统计某筛选条件下的可用题量（供前端实时反馈，不返回题目内容） */
+  count(opts = {}) {
+    const pool = this.filter(opts);
+    return {
+      poolSize: pool.length,
+      availableUnique: new Set(pool.map((e) => e.qid)).size,
+    };
+  }
+
   /** 由出现记录构建题目对象；withAnswers 控制是否附带答案与解析 */
   toQuestion(entry, { withAnswers = false } = {}) {
     const got = this.getContent(entry.qid);

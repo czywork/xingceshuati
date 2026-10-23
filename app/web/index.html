@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>行测真题刷题系统</title>
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/pages.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <div class="header-inner">
+          <a class="brand" href="#/setup">
+            <span class="brand-logo">行</span>
+            <span class="brand-text">行测真题刷题</span>
+          </a>
+          <nav class="main-nav" id="main-nav">
+            <a href="#/setup" class="nav-link" data-route="setup">开始刷题</a>
+            <a href="#/library" class="nav-link" data-route="library">错题本 / 收藏</a>
+          </nav>
+          <div class="header-stats" id="header-stats"></div>
+        </div>
+      </header>
+
+      <main id="outlet" class="outlet"></main>
+
+      <footer class="app-footer">
+        本地离线运行 · 真题数据仅供个人学习研究使用
+      </footer>
+    </div>
+
+    <div id="toast-root" class="toast-root"></div>
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>

@@ -14,7 +14,7 @@ function appendChildren(el, children) {
 /**
  * 创建元素。
  * @param {string} tag 标签名
- * @param {object} attrs 属性：class/html/text/style/on*/dataset/普通属性
+ * @param {object} attrs 属性：class、html、text、style、onXxx 事件、dataset，其余为普通属性
  * @param  {...any} children 子节点
  */
 export function h(tag, attrs = {}, ...children) {

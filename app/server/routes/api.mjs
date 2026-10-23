@@ -68,6 +68,13 @@ export function registerApi(router, bank) {
     sendJson(res, 200, result);
   });
 
+  // 统计：返回当前筛选条件下的可用题量（不返回内容）
+  router.add('POST', '/api/count', async (req, res) => {
+    const body = await readBody(req);
+    const opts = parseQuizOptions({ ...body, count: body.count || 1 });
+    sendJson(res, 200, bank.count(opts));
+  });
+
   // 判分：提交答案，返回正确率与逐题结果
   router.add('POST', '/api/grade', async (req, res) => {
     const body = await readBody(req);

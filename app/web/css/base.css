@@ -1,0 +1,212 @@
+/* ==========================================================================
+   base.css — 设计令牌、重置、排版、整体布局、通用工具类
+   ========================================================================== */
+
+:root {
+  /* 颜色 */
+  --bg: #eef1f7;
+  --surface: #ffffff;
+  --surface-2: #f7f9fc;
+  --primary: #4263eb;
+  --primary-dark: #364fc7;
+  --primary-soft: #edf2ff;
+  --text: #1f2933;
+  --text-soft: #3e4c59;
+  --muted: #7b8794;
+  --border: #e4e7eb;
+  --border-strong: #cbd2d9;
+  --success: #2f9e44;
+  --success-soft: #ebfbee;
+  --danger: #e03131;
+  --danger-soft: #fff5f5;
+  --warning: #f08c00;
+  --warning-soft: #fff9db;
+
+  /* 尺寸 */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow: 0 4px 16px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.14);
+  --header-h: 60px;
+  --container: 1120px;
+
+  /* 字体 */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  line-height: 1.3;
+  font-weight: 650;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- 顶部导航 ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--header-h);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: var(--container);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.brand-logo {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--primary), #7048e8);
+  color: #fff;
+  font-size: 16px;
+}
+
+.main-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-link {
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: var(--text-soft);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-link:hover {
+  background: var(--surface-2);
+}
+
+.nav-link.active {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.header-stats {
+  margin-left: auto;
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.header-stats b {
+  color: var(--text);
+  font-weight: 650;
+}
+
+/* ---------- 主体容器 ---------- */
+.outlet {
+  flex: 1;
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 18px;
+  color: var(--muted);
+  font-size: 12.5px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* ---------- 通用工具类 ---------- */
+.row {
+  display: flex;
+  align-items: center;
+}
+.row-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.spacer { flex: 1; }
+.muted { color: var(--muted); }
+.text-center { text-align: center; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.hidden { display: none !important; }
+
+.page-error {
+  max-width: 520px;
+  margin: 80px auto;
+  padding: 32px;
+  text-align: center;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 720px) {
+  .header-inner { gap: 12px; padding: 0 12px; }
+  .brand-text { display: none; }
+  .header-stats { display: none; }
+  .outlet { padding: 16px 12px 40px; }
+}
