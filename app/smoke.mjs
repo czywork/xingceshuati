@@ -53,6 +53,14 @@ try {
   const iconRes = await fetch(BASE + '/图标.png');
   check('GET /图标.png（站点图标）返回图片', iconRes.status === 200 && /image\/png/.test(iconRes.headers.get('content-type') || ''));
 
+  // 缓存策略：文本资源协商缓存（改完刷新即生效），图片长期强缓存
+  const cssEtag = cssRes.headers.get('etag') || '';
+  const cssCache = cssRes.headers.get('cache-control') || '';
+  check('CSS/JS 走协商缓存（ETag + no-cache）', /^W\/"/.test(cssEtag) && cssCache.includes('no-cache'));
+  check('图片长期强缓存（max-age=604800）', /max-age=604800/.test(iconRes.headers.get('cache-control') || ''));
+  const revalidated = await fetch(BASE + '/css/base.css', { headers: { 'If-None-Match': cssEtag } });
+  check('带 If-None-Match 命中缓存返回 304', revalidated.status === 304);
+
   // 2) 元数据
   const meta = await json('/api/meta');
   check('GET /api/meta 唯一题数 > 0', meta.body?.totalUniqueQuestions > 0);

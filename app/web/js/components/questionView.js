@@ -29,7 +29,9 @@ export function materialBlock(q) {
 
 /** 题干块 */
 export function stemBlock(q) {
-  return h('div', { class: 'stem q-content', html: q.stemHtml || '' });
+  // 修复：过滤字面量 "null" 字符串
+  const html = (q.stemHtml || '').replace(/^null\s*/, '');
+  return h('div', { class: 'stem q-content', html });
 }
 
 /**

@@ -117,7 +117,7 @@ export function renderResult() {
   function reviewItem(q, d, num) {
     const merged = { ...q, answer: d.answer, analysisHtml: d.analysisHtml };
     const selText = d.selected.length ? d.selected.join(' ') : '未作答';
-    const ansText = (d.answer || []).join(' ');
+    const ansText = (d.answer || []).join(' ') || '—'; // 与错题本一致：无答案时显示占位符
 
     const favBtn = h('button', {
       class: `btn btn-sm fav-btn${store.isFavorite(q.qid) ? ' active' : ''}`,
