@@ -2,7 +2,7 @@
    components.css — 按钮、卡片、徽章、表单、标签、进度条、提示等通用组件
    ========================================================================== */
 
-/* ---------- 卡片 ---------- */
+/* ---------- 卡片（白纸） ---------- */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -15,15 +15,20 @@
 .card-title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 650;
+  gap: 9px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
   color: var(--text);
   margin-bottom: 16px;
+  letter-spacing: 0.02em;
 }
 
+/* 标题前的竖线，像批注线 */
 .card-title .dot {
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 3px;
+  height: 15px;
+  border-radius: 2px;
   background: var(--primary);
 }
 
@@ -42,35 +47,73 @@
   font-weight: 550;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: color 0.15s, border-color 0.15s, background 0.15s,
+    box-shadow 0.15s, transform 0.1s;
   user-select: none;
   white-space: nowrap;
+  box-shadow: var(--shadow-sm);
 }
 
-.btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
-.btn:active:not(:disabled) { transform: translateY(1px); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-soft);
+  box-shadow: var(--shadow);
+}
+
+.btn:active:not(:disabled) { transform: translateY(1px) scale(0.99); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(180deg, var(--primary-hi), var(--primary));
   border-color: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
+  box-shadow: 0 2px 6px -1px color-mix(in srgb, var(--primary) 45%, transparent);
 }
 .btn-primary:hover:not(:disabled) {
-  background: var(--primary-dark);
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
   border-color: var(--primary-dark);
-  color: #fff;
+  color: var(--on-primary);
+  box-shadow: 0 8px 18px -6px color-mix(in srgb, var(--primary) 60%, transparent);
 }
 
-.btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
-.btn-danger:hover:not(:disabled) { background: #c92a2a; border-color: #c92a2a; color: #fff; }
+.btn-danger {
+  background: linear-gradient(180deg, var(--danger), var(--danger-dark));
+  border-color: var(--danger);
+  color: var(--on-danger);
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--danger-dark);
+  border-color: var(--danger-dark);
+  color: var(--on-danger);
+}
 
-.btn-ghost { background: transparent; border-color: transparent; color: var(--muted); }
-.btn-ghost:hover:not(:disabled) { background: var(--surface-2); color: var(--text); border-color: transparent; }
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  box-shadow: none;
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .btn-lg { padding: 13px 28px; font-size: 16px; border-radius: var(--radius); }
 .btn-sm { padding: 5px 12px; font-size: 13px; }
 .btn-block { width: 100%; }
+
+/* 键盘可见焦点（可访问性） */
+.btn:focus-visible,
+.chip:focus-visible,
+.tab:focus-visible,
+.theme-toggle:focus-visible,
+.option:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
 
 /* ---------- 徽章 ---------- */
 .badge {
@@ -84,10 +127,10 @@
   color: var(--muted);
   border: 1px solid var(--border);
 }
-.badge-primary { background: var(--primary-soft); color: var(--primary-dark); border-color: #d0ebff; }
-.badge-success { background: var(--success-soft); color: var(--success); border-color: #b2f2bb; }
-.badge-danger { background: var(--danger-soft); color: var(--danger); border-color: #ffc9c9; }
-.badge-warning { background: var(--warning-soft); color: #e67700; border-color: #ffec99; }
+.badge-primary { background: var(--primary-soft); color: var(--primary-dark); border-color: transparent; }
+.badge-success { background: var(--success-soft); color: var(--success); border-color: transparent; }
+.badge-danger { background: var(--danger-soft); color: var(--danger); border-color: transparent; }
+.badge-warning { background: var(--warning-soft); color: var(--warning); border-color: transparent; }
 
 /* ---------- 表单 ---------- */
 .field { margin-bottom: 20px; }
@@ -121,21 +164,23 @@
 /* ---------- 可多选 chip ---------- */
 .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
-  padding: 6px 14px;
+  padding: 5px 13px;
   border: 1px solid var(--border-strong);
   border-radius: 999px;
   background: var(--surface);
   color: var(--text-soft);
   font-size: 13.5px;
   cursor: pointer;
-  transition: all 0.14s;
+  transition: color 0.14s, border-color 0.14s, background 0.14s, transform 0.1s;
   user-select: none;
 }
-.chip:hover { border-color: var(--primary); color: var(--primary); }
+.chip:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+.chip:active { transform: scale(0.97); }
 .chip.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
+  box-shadow: 0 2px 6px -2px color-mix(in srgb, var(--primary) 60%, transparent);
 }
 .chip .chip-count { opacity: 0.7; font-size: 12px; margin-left: 4px; }
 
@@ -165,13 +210,13 @@
 /* ---------- 进度条 ---------- */
 .progress {
   height: 6px;
-  background: var(--border);
+  background: var(--track);
   border-radius: 999px;
   overflow: hidden;
 }
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary), #7048e8);
+  background: linear-gradient(90deg, var(--primary), var(--primary-hi));
   border-radius: 999px;
   transition: width 0.3s ease;
 }
@@ -182,7 +227,7 @@
   display: flex; justify-content: space-between;
   font-size: 13px; color: var(--text-soft); margin-bottom: 5px;
 }
-.bar-track { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.bar-track { height: 8px; background: var(--track); border-radius: 999px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 999px; background: var(--primary); transition: width 0.4s ease; }
 .bar-fill.good { background: var(--success); }
 .bar-fill.mid { background: var(--warning); }
@@ -191,7 +236,7 @@
 /* ---------- 提示 toast ---------- */
 .toast-root {
   position: fixed;
-  top: 74px;
+  top: 78px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
@@ -203,17 +248,18 @@
 }
 .toast {
   padding: 11px 20px;
-  border-radius: 999px;
-  background: #1f2933;
-  color: #fff;
+  border-radius: var(--radius);
+  background: var(--toast-bg);
+  color: var(--toast-text);
   font-size: 14px;
+  font-weight: 500;
   box-shadow: var(--shadow-lg);
   animation: toast-in 0.24s ease;
   max-width: 80vw;
 }
-.toast.success { background: var(--success); }
-.toast.error { background: var(--danger); }
-.toast.warning { background: var(--warning); }
+.toast.success { background: var(--success); color: var(--on-success); }
+.toast.error { background: var(--danger); color: var(--on-danger); }
+.toast.warning { background: var(--warning); color: var(--on-primary); }
 @keyframes toast-in {
   from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -221,15 +267,25 @@
 
 /* ---------- 空状态 / 加载 ---------- */
 .empty {
+  position: relative;
   text-align: center;
-  padding: 56px 20px;
+  padding: 58px 20px;
   color: var(--muted);
 }
-.empty .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
+.empty .empty-icon {
+  display: inline-block;
+  font-size: 40px;
+  line-height: 1;
+  padding: 24px 30px;
+  border-radius: 999px;
+  /* 光晕直接作为背景，文字内容自然盖在它上面 */
+  background: radial-gradient(closest-side, var(--primary-soft), transparent 72%);
+  margin-bottom: 6px;
+}
 
 .spinner {
   width: 34px; height: 34px;
-  border: 3px solid var(--border);
+  border: 3px solid var(--track);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -239,7 +295,13 @@
 
 .loading-mask {
   position: fixed; inset: 0; z-index: 300;
-  background: rgba(255,255,255,0.7);
+  background: var(--mask);
   display: grid; place-items: center;
   backdrop-filter: blur(2px);
+}
+
+/* 尊重系统「减少动效」偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .outlet > * { animation: none; }
+  .toast { animation: none; }
 }

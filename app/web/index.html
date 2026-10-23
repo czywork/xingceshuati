@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>行测真题刷题系统</title>
+    <script>
+      /* 主题引导：在首屏渲染前套用已保存的主题，避免白屏瞬间闪一下 */
+      (function () {
+        try {
+          var t = localStorage.getItem('xingce-theme');
+          if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {
+          /* 隐私模式下 localStorage 不可用，保持默认浅色即可 */
+        }
+      })();
+    </script>
     <link rel="icon" type="image/png" href="/图标.png" />
     <link rel="stylesheet" href="/css/base.css" />
     <link rel="stylesheet" href="/css/components.css" />
@@ -22,6 +33,10 @@
             <a href="#/library" class="nav-link" data-route="library">错题本 / 收藏</a>
           </nav>
           <div class="header-stats" id="header-stats"></div>
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
+            <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5Z"/></svg>
+          </button>
         </div>
       </header>
 

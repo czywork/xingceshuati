@@ -43,6 +43,10 @@ try {
   const cssRes = await fetch(BASE + '/css/base.css');
   check('GET /css/base.css (CSS MIME)', cssRes.status === 200 && /css/.test(cssRes.headers.get('content-type') || ''));
 
+  const cssText = await cssRes.text();
+  check('base.css 含纸墨令牌与夜读主题', cssText.includes('--font-serif') && cssText.includes('[data-theme="dark"]'));
+  check('首页含日/夜切换按钮与主题引导脚本', homeText.includes('theme-toggle') && homeText.includes('xingce-theme'));
+
   const pageRes = await fetch(BASE + '/js/pages/quiz.js');
   check('GET /js/pages/quiz.js', pageRes.status === 200);
 

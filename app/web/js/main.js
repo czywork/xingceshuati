@@ -56,3 +56,39 @@ getMeta()
   .catch(() => {
     /* 元数据加载失败时头部仅少一项统计，不影响使用 */
   });
+
+// ---- 主题切换：日间「纸墨」 / 夜间「夜读」----
+const THEME_KEY = 'xingce-theme';
+const rootEl = document.documentElement;
+const themeBtn = qs('#theme-toggle');
+
+function currentTheme() {
+  return rootEl.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+function applyTheme(theme, { persist = true } = {}) {
+  if (theme === 'dark') rootEl.setAttribute('data-theme', 'dark');
+  else rootEl.removeAttribute('data-theme');
+
+  if (persist) {
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch {
+      /* 隐私模式下写入失败，忽略即可 */
+    }
+  }
+
+  if (themeBtn) {
+    const next = theme === 'dark' ? '日间' : '夜间';
+    themeBtn.title = `切换到${next}模式`;
+    themeBtn.setAttribute('aria-label', `切换到${next}模式`);
+    themeBtn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+  }
+}
+
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+  });
+  applyTheme(currentTheme(), { persist: false }); // 首屏只同步按钮文案，不重复写存储
+}

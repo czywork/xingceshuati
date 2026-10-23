@@ -1,40 +1,119 @@
 /* ==========================================================================
-   base.css — 设计令牌、重置、排版、整体布局、通用工具类
+   base.css — 设计令牌（纸墨 / 夜读）、重置、排版、整体布局、主题切换
+   --------------------------------------------------------------------------
+   主题：纸墨卷面。取色自站点图标 —— 钢笔蓝 #1B4F8F / 批改红 #B5342A /
+   琥珀点缀，纸底偏暖白，正文近墨黑；标题与题面用衬线，界面元素用无衬线。
+   深色主题为「夜读」，通过 <html data-theme="dark"> 切换。
    ========================================================================== */
 
+/* ---------- 纸墨（浅色，默认） ---------- */
 :root {
-  /* 颜色 */
-  --bg: #eef1f7;
-  --surface: #ffffff;
-  --surface-2: #f7f9fc;
-  --primary: #4263eb;
-  --primary-dark: #364fc7;
-  --primary-soft: #edf2ff;
-  --text: #1f2933;
-  --text-soft: #3e4c59;
-  --muted: #7b8794;
-  --border: #e4e7eb;
-  --border-strong: #cbd2d9;
-  --success: #2f9e44;
-  --success-soft: #ebfbee;
-  --danger: #e03131;
-  --danger-soft: #fff5f5;
-  --warning: #f08c00;
-  --warning-soft: #fff9db;
+  color-scheme: light;
+
+  /* 纸面 / 墨色 */
+  --bg: #f5f2ea;
+  --surface: #fffefb;
+  --surface-2: #f4f0e6;
+  --paper: #fdfcf8;
+  --text: #211f1a;
+  --text-soft: #4b463c;
+  --muted: #8b8272;
+  --border: #e6e0d0;
+  --border-strong: #d2c9b4;
+
+  /* 钢笔蓝（主色） */
+  --primary: #1b4f8f;
+  --primary-dark: #143c6e;
+  --primary-hi: #3a76bd;
+  --primary-soft: #e7eef7;
+  --on-primary: #ffffff;
+
+  /* 批改红 */
+  --danger: #b5342a;
+  --danger-dark: #98291f;
+  --danger-soft: #fbeceb;
+  --on-danger: #ffffff;
+
+  /* 竹绿（对勾） */
+  --success: #2f7d4f;
+  --success-soft: #eaf3ed;
+  --on-success: #ffffff;
+
+  /* 赭黄 / 琥珀（图标的点睛色） */
+  --warning: #a9761a;
+  --warning-soft: #f9f2e0;
+  --accent: #c8871e;
+  --accent-soft: #faf1dd;
+
+  /* 特殊面 */
+  --toast-bg: #211f1a;
+  --toast-text: #f7f4ec;
+  --mask: rgba(245, 242, 234, 0.8);
+  --track: #e6e0d0;
+
+  /* 装订线阴影（页面左右留白处的纸感） */
+  --rule: rgba(33, 31, 26, 0.07);
 
   /* 尺寸 */
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-lg: 18px;
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
-  --shadow: 0 4px 16px rgba(16, 24, 40, 0.08);
-  --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.14);
-  --header-h: 60px;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(61, 51, 31, 0.06);
+  --shadow: 0 6px 18px -10px rgba(61, 51, 31, 0.22), 0 1px 2px rgba(61, 51, 31, 0.05);
+  --shadow-lg: 0 18px 42px -16px rgba(61, 51, 31, 0.3);
+  --header-h: 62px;
   --container: 1120px;
 
   /* 字体 */
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong",
+    "SimSun", Georgia, "Times New Roman", serif;
+}
+
+/* ---------- 夜读（深色） ---------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #14130f;
+  --surface: #1c1a15;
+  --surface-2: #232019;
+  --paper: #1f1d17;
+  --text: #ece7db;
+  --text-soft: #c2bbaa;
+  --muted: #8d8573;
+  --border: #302c23;
+  --border-strong: #453f32;
+
+  --primary: #7fa9de;
+  --primary-dark: #a3c4ec;
+  --primary-hi: #9dc0e8;
+  --primary-soft: rgba(127, 169, 222, 0.14);
+  --on-primary: #10161d;
+
+  --danger: #e8735f;
+  --danger-dark: #f08e7c;
+  --danger-soft: rgba(232, 115, 95, 0.14);
+  --on-danger: #1b0f0c;
+
+  --success: #6cbf8c;
+  --success-soft: rgba(108, 191, 140, 0.13);
+  --on-success: #0d1a13;
+
+  --warning: #d9a441;
+  --warning-soft: rgba(217, 164, 65, 0.14);
+  --accent: #e0a94a;
+  --accent-soft: rgba(224, 169, 74, 0.15);
+
+  --toast-bg: #ece7db;
+  --toast-text: #1c1a15;
+  --mask: rgba(20, 19, 15, 0.75);
+  --track: #302c23;
+  --rule: rgba(236, 231, 219, 0.07);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 6px 18px -10px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 18px 42px -16px rgba(0, 0, 0, 0.7);
 }
 
 * {
@@ -54,19 +133,24 @@ body {
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-h1, h2, h3, h4 {
+/* ---------- 排版：标题用衬线，拉开字阶 ---------- */
+h1,
+h2,
+h3,
+h4 {
   margin: 0;
-  line-height: 1.3;
-  font-weight: 650;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: 0.01em;
 }
+
+h1 { font-size: 26px; }
+h2 { font-size: 21px; }
+h3 { font-size: 17px; }
 
 a {
   color: var(--primary);
@@ -78,15 +162,39 @@ img {
   height: auto;
 }
 
+/* 数字统一等宽，避免倒计时/正确率跳动 */
+.timer,
+.quiz-progress-text,
+.ring-value,
+.stat-value,
+.bar-head,
+.badge,
+.summary-total {
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- 顶部导航 ---------- */
 .app-header {
   position: sticky;
   top: 0;
   z-index: 50;
   height: var(--header-h);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: saturate(180%) blur(8px);
+  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: saturate(150%) blur(10px);
   border-bottom: 1px solid var(--border);
+}
+
+/* 卷头的双线：页头下方多一道细线，像卷面的抬头分隔线 */
+.app-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: var(--border);
+  opacity: 0.85;
 }
 
 .header-inner {
@@ -96,7 +204,7 @@ img {
   padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
 }
 
 .brand {
@@ -104,40 +212,49 @@ img {
   align-items: center;
   gap: 10px;
   color: var(--text);
-  font-weight: 700;
-  font-size: 17px;
 }
 
 .brand-logo {
   display: block;
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   object-fit: cover;
-  background: linear-gradient(135deg, var(--primary), #7048e8);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.brand-text {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.04em;
 }
 
 .main-nav {
   display: flex;
-  gap: 4px;
+  gap: 2px;
 }
 
 .nav-link {
-  padding: 7px 14px;
-  border-radius: 999px;
+  position: relative;
+  padding: 7px 13px;
+  border-radius: 6px;
   color: var(--text-soft);
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.15s, color 0.15s;
+  transition: color 0.15s, background 0.15s;
 }
 
 .nav-link:hover {
   background: var(--surface-2);
+  color: var(--text);
 }
 
 .nav-link.active {
+  color: var(--primary);
+  font-weight: 650;
   background: var(--primary-soft);
-  color: var(--primary-dark);
 }
 
 .header-stats {
@@ -150,8 +267,40 @@ img {
 
 .header-stats b {
   color: var(--text);
-  font-weight: 650;
+  font-weight: 700;
 }
+
+/* ---------- 主题切换按钮 ---------- */
+.theme-toggle {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-soft);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.theme-toggle:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: rotate(-18deg);
+}
+
+.theme-toggle:active {
+  transform: rotate(-18deg) scale(0.94);
+}
+
+/* 浅色显示月亮（点击进入夜读），深色显示太阳 */
+.theme-toggle .icon-sun { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
 /* ---------- 主体容器 ---------- */
 .outlet {
@@ -159,12 +308,23 @@ img {
   width: 100%;
   max-width: var(--container);
   margin: 0 auto;
-  padding: 24px 20px 48px;
+  padding: 26px 20px 52px;
+}
+
+/* 路由切换淡入（元素插入时动画自然触发）
+   不用 fill-mode，避免动画结束后残留 transform 影响内部 sticky 元素 */
+.outlet > * {
+  animation: page-in 0.3s ease;
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .app-footer {
   text-align: center;
-  padding: 18px;
+  padding: 20px;
   color: var(--muted);
   font-size: 12.5px;
   border-top: 1px solid var(--border);
@@ -198,13 +358,32 @@ img {
   padding: 32px;
   text-align: center;
   background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
 }
 
+/* ---------- 细滚动条（纸感） ---------- */
+.scroll-box::-webkit-scrollbar,
+.material-box::-webkit-scrollbar {
+  width: 9px;
+}
+.scroll-box::-webkit-scrollbar-thumb,
+.material-box::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.scroll-box::-webkit-scrollbar-track,
+.material-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 @media (max-width: 720px) {
-  .header-inner { gap: 12px; padding: 0 12px; }
+  .header-inner { gap: 10px; padding: 0 12px; }
   .brand-text { display: none; }
   .header-stats { display: none; }
-  .outlet { padding: 16px 12px 40px; }
+  .outlet { padding: 18px 12px 40px; }
+  h1 { font-size: 22px; }
 }
