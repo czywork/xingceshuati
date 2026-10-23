@@ -1,0 +1,10 @@
+# 依赖（本项目零依赖，保留以防未来引入）
+node_modules/
+
+# 解析构建产物（体积大，可由 npm run build 重新生成）
+data/
+
+# 日志与系统文件
+*.log
+.DS_Store
+Thumbs.db
