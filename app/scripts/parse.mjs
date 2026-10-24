@@ -23,6 +23,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { DATA_SOURCE, BUILD_OUTPUT, MODULES, FILES } from '../config.mjs';
 import { parsePaper } from './lib/parsePaper.mjs';
+import { refineKnowledgePoint } from './lib/knowledgePoint.mjs';
 
 function parseArgs(argv) {
   const args = { modules: null, limit: Infinity };
@@ -134,13 +135,16 @@ function main() {
           };
         }
 
+        // 考点细化：数量关系中把数列题从「数学运算」分出为「数字推理」
+        const kp = refineKnowledgePoint(mod.code, q);
+
         // 索引保留每一条出现记录（含各自的年份/地区/试卷/材料）
         index.push({
           qid: q.qid,
           m: mod.code,
           y: year,
           r: region,
-          k: q.knowledgePoint,
+          k: kp,
           p: paper,
           multi: q.isMulti,
           ord: q.order,
@@ -153,7 +157,7 @@ function main() {
 
         if (year) yearAgg.set(year, (yearAgg.get(year) || 0) + 1);
         if (region) regionAgg.set(region, (regionAgg.get(region) || 0) + 1);
-        if (q.knowledgePoint) kpMap.set(q.knowledgePoint, (kpMap.get(q.knowledgePoint) || 0) + 1);
+        if (kp) kpMap.set(kp, (kpMap.get(kp) || 0) + 1);
       }
 
       stats.skippedNoQid += result.skipped.noQid;

@@ -45,6 +45,15 @@ test('抽题：地区与考点筛选生效', () => {
   }
 });
 
+test('抽题：可单独抽出数量关系中的「数字推理」题', () => {
+  const res = bank.generate({ modules: ['04'], knowledgePoints: ['数字推理'], count: 30 });
+  assert.ok(res.questions.length > 0, '应能抽到数字推理题');
+  for (const q of res.questions) {
+    assert.equal(q.module.code, '04');
+    assert.equal(q.knowledgePoint, '数字推理');
+  }
+});
+
 test('抽题：请求数超过可用唯一题时按可用量返回', () => {
   const res = bank.generate({ modules: ['01'], regions: ['西藏'], count: 999 });
   assert.ok(res.questions.length <= res.availableUnique);
