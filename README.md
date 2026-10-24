@@ -6,7 +6,38 @@
 
 > 真题数据来自开源项目 [ERRRC/xingcezhenti](https://github.com/ERRRC/xingcezhenti)；本刷题系统在该数据基础上由 AI 开发实现。
 
-## 快速开始
+## 下载即用（推荐）
+
+**已发布到 GitHub Release** —— [**下载最新版**](https://github.com/czywork/xingceshuati/releases/latest)
+
+`行测刷题系统-v1.0.0-win64.exe`：约 **481 MB 单文件**，免安装、免 Node、免配置、**全程离线**。
+下载后直接双击即可，不依赖本仓库其它文件（`release/` 与 `tools/` 均为本机目录，不入库，无需 clone）。
+
+| 项目     | 说明                                                           |
+| -------- | -------------------------------------------------------------- |
+| 运行环境 | Windows 10 / 11 64 位（无需预装 Node、无需联网）               |
+| 磁盘占用 | 安装时需约 1.2 GB 空闲空间，装完约 860 MB                      |
+| 内置组件 | 便携版 Chromium 156 + Node.js 24（全部封装在 exe 内）          |
+
+### 第一次双击
+
+1. 弹出**安装向导**，默认装到 `%LOCALAPPDATA%\XingceQuiz\v1.0.0`
+2. 想换地方就点「选择文件夹…」，或直接改输入框里的路径；界面会实时显示**目标磁盘可用空间**，空间不足 / 选到盘根 / 目标非空都会当场提示
+3. 点「开始安装」，约 **30–60 秒**释放完运行环境（进度条附实时速度与剩余时间）
+4. 完成后自动拉起服务并打开界面，无需任何手动操作
+
+> 安装位置会被记住（写在 `%LOCALAPPDATA%\XingceQuiz\location.txt`），**之后每次双击约 2 秒直接启动**，不再询问。
+
+### 日常使用
+
+- **打开界面**：双击 exe。程序已在后台时，双击会把已开着的界面调出来，不会重复启动
+- **退出**：关闭界面窗口即可（后台服务随之结束）；也可右键托盘图标 → 「退出（停止服务）」
+- **换安装位置**：删掉 `location.txt`，下次双击重新走安装向导
+- **完全卸载**：删除安装目录 + `%LOCALAPPDATA%\XingceQuiz` 整个文件夹。无注册表项、无残留
+
+> 注意：运行环境装在安装目录里，但**启动器就是那个 exe**。别把 exe 删了，否则以后无法再启动。
+
+## 快速开始（从源码运行）
 
 ```bash
 # 前置：Node.js >= 18（推荐 20+）
@@ -67,6 +98,21 @@ app/
 ├─ tests/                # node:test 单元测试（解析 / 题库 / HTTP）
 ├─ smoke.mjs             # 端到端冒烟测试（真实数据 + 真实静态服务）
 └─ data/                 # 构建产物（gitignore）：index.json / meta.json / questions-<code>.json
+
+真题数据/                 # 原始题库 2016–2026（515 套卷）+ 90-图片/
+tools/                    # 单文件免安装版工具链（gitignore，仅本机使用）
+├─ package-release.mjs    # 打包入口：编译壳 → 追加 payload → 输出带图标单 exe
+├─ launcher/              # C# 启动器壳（WinForms）
+│  ├─ Launcher.cs         # 入口：单实例锁、安装检查、拉起服务
+│  ├─ SetupForm.cs        # 安装向导：选安装位置 + 解压进度
+│  ├─ Install.cs          # 安装位置记录、磁盘可用空间检测
+│  ├─ Extractor.cs        # 尾部 ZIP 定位 + 解压（后台线程 / 进度 / 可取消）
+│  ├─ Runtime.cs          # 起服务、开界面、托盘、关闭即退出
+│  ├─ Ui.cs               # 自绘控件与配色（对齐网页端品牌色）
+│  └─ make-icon.ps1       # PNG → 多尺寸 ICO
+└─ lib/pack-util.mjs      # 下载缓存 / 压缩 / 文件拼接等工具
+
+release/                  # 打包产物与缓存（gitignore）
 ```
 
 ## HTTP 接口
@@ -101,6 +147,29 @@ app/
 | `npm run smoke` | 端到端冒烟测试（需已 `npm run build`） |
 
 自定义端口 / 主机：`PORT=8080 HOST=0.0.0.0 npm start`。
+
+## 打包 Windows 单文件版
+
+```bash
+node tools/package-release.mjs              # 完整单 exe（约 480 MB，5 分钟内）
+node tools/package-release.mjs --folder     # 额外保留解压好的文件夹版
+node tools/package-release.mjs --self-test  # 用小 payload 验证「拼接 → 解压」链路
+node tools/package-release.mjs --version 1.1.0 --port 5173
+```
+
+产物：`release/行测刷题系统-v<版本>-win64.exe`。
+
+原理是 C# 壳（`tools/launcher/*.cs`）编译在前、`payload.zip` 追加在后；运行时壳从自身末尾
+定位 ZIP 并解压到用户指定目录，全程不需要外部解压软件。
+
+- 首次打包会下载 Node 与 Chromium（约 236 MB）到 `release/_cache/`，之后复用缓存
+- 依赖系统自带的 `csc.exe`（`C:\Windows\Microsoft.NET\Framework64\v4.0.30319\`）
+- exe 图标由 `app/web/图标.png` 自动裁成正方形并生成 7 个尺寸的 ICO 嵌入
+
+单文件版另有一组调试参数：`--extract-only`（只解压不起服务）、`--no-browser`（起服务但不开界面）、
+`--install-dir=PATH`（指定安装位置）、`--yes`（安装向导自动开始，供脚本实测）。
+
+> 改了版本号后，旧的安装目录不会被复用：`.complete` 标记里存了版本号，不一致就重新走安装向导。
 
 ## 说明
 
