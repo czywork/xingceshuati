@@ -1,4 +1,3 @@
-
 # 行测真题刷题系统
 
 基于本仓库 `真题数据/`（2016–2026，515 套卷 / 5.8 万条收录 / 2.7 万道唯一真题）构建的**可视化刷题网站**。
@@ -13,11 +12,11 @@
 `行测刷题系统-v1.0.0-win64.exe`：约 **481 MB 单文件**，免安装、免 Node、免配置、**全程离线**。
 下载后直接双击即可，不依赖本仓库其它文件（`release/` 与 `tools/` 均为本机目录，不入库，无需 clone）。
 
-| 项目     | 说明                                                           |
-| -------- | -------------------------------------------------------------- |
-| 运行环境 | Windows 10 / 11 64 位（无需预装 Node、无需联网）               |
-| 磁盘占用 | 安装时需约 1.2 GB 空闲空间，装完约 860 MB                      |
-| 内置组件 | 便携版 Chromium 156 + Node.js 24（全部封装在 exe 内）          |
+| 项目     | 说明                                                  |
+| -------- | ----------------------------------------------------- |
+| 运行环境 | Windows 10 / 11 64 位（无需预装 Node、无需联网）      |
+| 磁盘占用 | 安装时需约 1.2 GB 空闲空间，装完约 860 MB             |
+| 内置组件 | 便携版 Chromium 156 + Node.js 24（全部封装在 exe 内） |
 
 ### 第一次双击
 
@@ -100,19 +99,6 @@ app/
 └─ data/                 # 构建产物（gitignore）：index.json / meta.json / questions-<code>.json
 
 真题数据/                 # 原始题库 2016–2026（515 套卷）+ 90-图片/
-tools/                    # 单文件免安装版工具链（gitignore，仅本机使用）
-├─ package-release.mjs    # 打包入口：编译壳 → 追加 payload → 输出带图标单 exe
-├─ launcher/              # C# 启动器壳（WinForms）
-│  ├─ Launcher.cs         # 入口：单实例锁、安装检查、拉起服务
-│  ├─ SetupForm.cs        # 安装向导：选安装位置 + 解压进度
-│  ├─ Install.cs          # 安装位置记录、磁盘可用空间检测
-│  ├─ Extractor.cs        # 尾部 ZIP 定位 + 解压（后台线程 / 进度 / 可取消）
-│  ├─ Runtime.cs          # 起服务、开界面、托盘、关闭即退出
-│  ├─ Ui.cs               # 自绘控件与配色（对齐网页端品牌色）
-│  └─ make-icon.ps1       # PNG → 多尺寸 ICO
-└─ lib/pack-util.mjs      # 下载缓存 / 压缩 / 文件拼接等工具
-
-release/                  # 打包产物与缓存（gitignore）
 ```
 
 ## HTTP 接口
@@ -147,34 +133,6 @@ release/                  # 打包产物与缓存（gitignore）
 | `npm run smoke` | 端到端冒烟测试（需已 `npm run build`） |
 
 自定义端口 / 主机：`PORT=8080 HOST=0.0.0.0 npm start`。
-
-## 打包 Windows 单文件版
-
-```bash
-node tools/package-release.mjs              # 完整单 exe（约 480 MB，5 分钟内）
-node tools/package-release.mjs --folder     # 额外保留解压好的文件夹版
-node tools/package-release.mjs --self-test  # 用小 payload 验证「拼接 → 解压」链路
-node tools/package-release.mjs --version 1.1.0 --port 5173
-```
-
-产物：`release/行测刷题系统-v<版本>-win64.exe`。
-
-原理是 C# 壳（`tools/launcher/*.cs`）编译在前、`payload.zip` 追加在后；运行时壳从自身末尾
-定位 ZIP 并解压到用户指定目录，全程不需要外部解压软件。
-
-- 首次打包会下载 Node 与 Chromium（约 236 MB）到 `release/_cache/`，之后复用缓存
-- 依赖系统自带的 `csc.exe`（`C:\Windows\Microsoft.NET\Framework64\v4.0.30319\`）
-- exe 图标由 `app/web/图标.png` 自动裁成正方形并生成 7 个尺寸的 ICO 嵌入
-
-单文件版另有一组调试参数：`--extract-only`（只解压不起服务）、`--no-browser`（起服务但不开界面）、
-`--install-dir=PATH`（指定安装位置）、`--yes`（安装向导自动开始，供脚本实测）。
-
-> 改了版本号后，旧的安装目录不会被复用：`.complete` 标记里存了版本号，不一致就重新走安装向导。
-
-## 说明
-
-- 题目 HTML 为本地可信数据，前端以 `innerHTML` 注入；服务默认仅监听 `127.0.0.1`。
-- `data/` 下的 JSON 以 2 空格缩进输出，便于人工查看与版本 diff（体积换可读性）。
 
 # 行测真题（原题副本 · 2016–2026）
 
